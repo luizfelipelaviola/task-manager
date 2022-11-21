@@ -1,0 +1,80 @@
+version: '3.7'
+
+services:
+  task_manager_api_postgres_prod:
+    container_name: task_manager_api_postgres_prod
+    image: postgres:latest
+    environment:
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=task_manager
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - ./.runtime/database/postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    restart: always
+    networks:
+      - task_manager_api_network_prod
+
+  task_manager_api_redis_prod:
+    container_name: task_manager_api_redis_prod
+    image: redis:alpine
+    volumes:
+      - ./.runtime/database/redis:/data
+    ports:
+      - 6379:6379
+    restart: always
+    networks:
+      - task_manager_api_network_prod
+
+  task_manager_api_gateway_prod:
+    container_name: task_manager_api_gateway_prod
+    image: task_manager_api_gateway_prod
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      # General
+      - APP_URL=http://localhost:3333
+      - APP_PORT=3333
+      - NODE_ENV=production
+      - DEFAULT_LANGUAGE=en
+      - TZ=UTC
+
+      # Cors
+      - CORS_ALLOWED_FROM=task_manager.com,app.task_manager.com
+
+      # Database
+      - DATABASE_URL=postgresql://postgres:docker@task_manager_api_postgres_prod:5432/task_manager?schema=public
+      - DATABASE_LOGGER_ENABLED=false
+      - DISABLE_ERD=true
+
+      # Redis
+      - REDIS_HOST=task_manager_api_redis_prod
+      - REDIS_PORT=6379
+      - REDIS_USER=
+      - REDIS_PASS=
+      - REDIS_DB=0
+
+      # Feature
+      - SENTRY_DSN=
+      - JWT_SECRET=secret
+      - JWT_EXPIRES_IN=7d
+    ports:
+      - 3333:3333
+    command: ./wait-for.sh task_manager_api_postgres_prod:5432 -s -- ./wait-for.sh task_manager_api_redis_prod:6379 -s -- bash -c "yarn run-s prisma:generate prisma:prod start"
+    depends_on:
+      - task_manager_api_postgres_prod
+      - task_manager_api_redis_prod
+    healthcheck:
+      test: curl -f http://task_manager_api_gateway_prod:3333/health || exit 1
+      interval: 1m
+      timeout: 20s
+      retries: 3
+      start_period: 1m
+    restart: always
+    networks:
+      - task_manager_api_network_prod
+
+networks:
+  task_manager_api_network_prod:

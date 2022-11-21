@@ -1,0 +1,43 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table users {
+  id String [pk]
+  email String [unique, not null]
+  name String [not null]
+  password_hash String [not null]
+  language String
+  tasks tasks [not null]
+  sessions user_sessions [not null]
+  payload Json [not null]
+  created_at DateTime [default: `now()`, not null]
+  updated_at DateTime [not null]
+}
+
+Table user_sessions {
+  id String [pk]
+  user_id String [not null]
+  user users [not null]
+  token String [not null]
+  expires_at DateTime [not null]
+  payload Json [not null]
+  canceled_at DateTime
+  created_at DateTime [default: `now()`, not null]
+  updated_at DateTime [not null]
+}
+
+Table tasks {
+  id String [pk]
+  title String [not null]
+  description String [not null]
+  status String [not null]
+  user_id String [not null]
+  user users [not null]
+  created_at DateTime [default: `now()`, not null]
+  updated_at DateTime [not null]
+}
+
+Ref: user_sessions.user_id > users.id
+
+Ref: tasks.user_id > users.id

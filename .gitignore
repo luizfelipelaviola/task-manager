@@ -1,0 +1,12 @@
+node_modules
+build
+temp
+coverage
+dist
+.env
+.runtime
+
+!tmp/.gitkeep
+translation.missing.json
+
+service-account.json

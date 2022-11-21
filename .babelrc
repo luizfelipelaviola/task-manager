@@ -1,0 +1,22 @@
+{
+  "presets": [
+    ["@babel/preset-env", { "targets": { "node": "current" } }],
+    ["@babel/preset-typescript", {
+      "allowNamespaces": true
+    }]
+  ],
+  "plugins": [
+    ["module-resolver", {
+      "alias": {
+        "@": "./",
+        "@config": "./src/config",
+        "@modules": "./src/modules",
+        "@shared": "./src/shared"
+      }
+      }],
+    "babel-plugin-transform-typescript-metadata",
+    ["@babel/plugin-transform-typescript", { "allowNamespaces": true }],
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    ["@babel/plugin-proposal-class-properties", { "loose": true }]
+  ]
+}
