@@ -1,5 +1,4 @@
 import dotenv from "dotenv";
-import "reflect-metadata";
 
 const globalSetup = async () => {
   dotenv.config({

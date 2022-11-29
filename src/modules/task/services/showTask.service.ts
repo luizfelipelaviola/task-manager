@@ -41,7 +41,7 @@ class ShowTaskService {
     if (!task)
       throw new AppError({
         key: "@show_task_service/TASK_NOT_FOUND",
-        message: t("@show_task_service/TASK_NOT_FOUND", "Rask not found."),
+        message: t("@show_task_service/TASK_NOT_FOUND", "Task not found."),
       });
 
     return task;

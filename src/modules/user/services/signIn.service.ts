@@ -51,7 +51,7 @@ class SignInService {
 
     if (!user)
       throw new AppError({
-        key: "@sign_in_service/USER_NOT_FOUND",
+        key: "@sign_in_service/EMAIL_OR_PASSWORD_INCORRECT",
         message: t(
           "@sign_in_service/EMAIL_OR_PASSWORD_INCORRECT",
           "Email or password incorrect.",
@@ -65,7 +65,7 @@ class SignInService {
 
     if (!isPasswordMatched)
       throw new AppError({
-        key: "@sign_in_service/INVALID_PASSWORD",
+        key: "@sign_in_service/EMAIL_OR_PASSWORD_INCORRECT",
         message: t(
           "@sign_in_service/EMAIL_OR_PASSWORD_INCORRECT",
           "Email or password incorrect.",

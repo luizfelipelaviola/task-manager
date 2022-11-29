@@ -1,8 +1,7 @@
 {
   "env": {
     "es2021": true,
-    "node": true,
-    "jest": true
+    "node": true
   },
   "extends": [
     "airbnb-base",
@@ -58,7 +57,7 @@
     "import/no-extraneous-dependencies": [
       "error",
       {
-        "devDependencies": ["**/*.spec.ts", "**/mocks/*.ts", "jest.config.ts"]
+        "devDependencies": ["**/__tests__/**/*", "**/*.spec.ts", "**/mocks/*.ts", "jest.config.ts"]
       }
     ]
   },

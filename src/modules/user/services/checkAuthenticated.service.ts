@@ -39,10 +39,10 @@ class CheckAuthenticatedService {
 
     if (!session)
       throw new AppError({
-        key: "@check_authenticated_service/INVALID_TOKEN",
+        key: "@check_authenticated_service/INVALID_SESSION",
         message: t(
-          "@check_authenticated_service/INVALID_TOKEN",
-          "Invalid token.",
+          "@check_authenticated_service/INVALID_SESSION",
+          "Invalid session.",
         ),
       });
 
